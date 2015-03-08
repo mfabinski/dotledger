@@ -61,6 +61,17 @@ class Transaction < ActiveRecord::Base
       .references(:sorted_transactions)
   }
 
+  def self.autocomplete_search(query, limit = 20)
+    where(['search ilike ?', "%#{query}%"])
+      .order(:search)
+      .uniq(:search)
+      .limit(limit)
+      .pluck(:search)
+      .map do |t|
+        {value: t }
+      end
+  end
+
   private
 
   def set_search

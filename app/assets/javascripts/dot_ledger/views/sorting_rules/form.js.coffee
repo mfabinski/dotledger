@@ -22,6 +22,47 @@ DotLedger.module 'Views.SortingRules', ->
       @ui.review.val("#{@model.get('review')}").change()
       @ui.tags.val((@model.get('tag_list') || []).join(', '))
 
+      @renderContainsTypeahead()
+      @renderNameTypeahead()
+
+    renderContainsTypeahead: ->
+      @containsBloodhoundEngine.initialize()
+      @ui.contains.typeahead({
+        highlight: true
+      },
+      {
+        name: 'transactions',
+        source: @containsBloodhoundEngine.ttAdapter()
+      })
+
+    renderNameTypeahead: ->
+      @nameBloodhoundEngine.initialize()
+      @ui.name.typeahead({
+        highlight: true
+      },
+      {
+        name: 'names',
+        source: @nameBloodhoundEngine.ttAdapter()
+      })
+
+    containsBloodhoundEngine:
+      new Bloodhound(
+        name: 'transactions'
+        remote: '/api/autocomplete/transactions_search?q=%QUERY'
+        datumTokenizer: (d)->
+          return Bloodhound.tokenizers.whitespace(d.val)
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+      )
+
+    nameBloodhoundEngine:
+      new Bloodhound(
+        name: 'names'
+        remote: '/api/autocomplete/sorting_rules_name?q=%QUERY'
+        datumTokenizer: (d)->
+          return Bloodhound.tokenizers.whitespace(d.val)
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+      )
+
     events:
       'click button.save': 'save'
       'submit form': 'save'

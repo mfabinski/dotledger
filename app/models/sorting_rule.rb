@@ -27,4 +27,16 @@ class SortingRule < ActiveRecord::Base
       .or(table[:contains].matches(wildcard_search_query))
     )
   }
+
+  def self.autocomplete_name(query, limit = 20)
+    where(['name ilike ?', "%#{query}%"])
+      .order(:name)
+      .uniq(:name)
+      .limit(limit)
+      .pluck(:name)
+      .map do |t|
+        {value: t }
+      end
+  end
+
 end

@@ -23,6 +23,9 @@ Rails.application.routes.draw do
     get 'options/goal_periods'
     get 'options/payment_types'
     get 'options/payment_periods'
+
+    get 'autocomplete/transactions_search'
+    get 'autocomplete/sorting_rules_name'
   end
 
   if Rails.env.development? || Rails.env.test?

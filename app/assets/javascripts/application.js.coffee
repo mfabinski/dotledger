@@ -15,6 +15,8 @@
 #= require backbone.babysitter
 #= require backbone.wreqr
 #= require backbone.marionette
+#= require typeahead.jquery
+#= require bloodhound
 #= require dot_ledger
 
 _.mixin
