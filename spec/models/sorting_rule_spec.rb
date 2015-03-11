@@ -19,6 +19,23 @@ describe SortingRule do
 
   it { should belong_to :category }
 
+  describe 'autocomplete' do
+    subject { SortingRule }
+
+    let!(:sorting_rule_1) { FactoryGirl.create :sorting_rule, name: 'Foo' }
+
+    let!(:sorting_rule_2) { FactoryGirl.create :sorting_rule, name: 'Foobar' }
+
+    let!(:sorting_rule_3) { FactoryGirl.create :sorting_rule, name: 'Bazbar' }
+
+    describe '#autocomplete_name' do
+      it 'returns values that match the query' do
+        expect(subject.autocomplete_name('foo')).to eq([{value: 'Foo'}, {value: 'Foobar'}])
+        expect(subject.autocomplete_name('bar')).to eq([{value: 'Bazbar'}, {value: 'Foobar'}])
+      end
+    end
+  end
+
   describe 'tags' do
     let!(:tag1) { FactoryGirl.create :tag, name: 'First Tag' }
 

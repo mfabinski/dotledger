@@ -1,5 +1,6 @@
 class SortingRule < ActiveRecord::Base
   include Taggable
+  extend Autocompleteable
 
   belongs_to :category
 
@@ -8,6 +9,8 @@ class SortingRule < ActiveRecord::Base
   validates :category, presence: true
 
   delegate :name, to: :category, prefix: true
+
+  autocomplete :name
 
   scope :with_category, proc {|category_id|
     where(category_id: category_id)
@@ -27,16 +30,4 @@ class SortingRule < ActiveRecord::Base
       .or(table[:contains].matches(wildcard_search_query))
     )
   }
-
-  def self.autocomplete_name(query, limit = 20)
-    where(['name ilike ?', "%#{query}%"])
-      .order(:name)
-      .uniq(:name)
-      .limit(limit)
-      .pluck(:name)
-      .map do |t|
-        {value: t }
-      end
-  end
-
 end

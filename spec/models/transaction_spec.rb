@@ -43,6 +43,23 @@ describe Transaction do
     end.to change(transaction, :search).from(nil).to('Foo Bar')
   end
 
+  describe 'autocomplete' do
+    subject { Transaction }
+
+    let!(:transaction_1) { FactoryGirl.create :transaction, memo: '', name: 'Foo' }
+
+    let!(:transaction_2) { FactoryGirl.create :transaction, memo: '', name: 'Foobar' }
+
+    let!(:transaction_3) { FactoryGirl.create :transaction, memo: '', name: 'Bazbar' }
+
+    describe '#autocomplete_search' do
+      it 'returns values that match the query' do
+        expect(subject.autocomplete_search('foo')).to eq([{value: 'Foo'}, {value: 'Foobar'}])
+        expect(subject.autocomplete_search('bar')).to eq([{value: 'Bazbar'}, {value: 'Foobar'}])
+      end
+    end
+  end
+
   describe '#unsorted' do
     let!(:unsorted) { FactoryGirl.create_list :transaction, 2 }
     let!(:sorted) { FactoryGirl.create_list :transaction, 2 }

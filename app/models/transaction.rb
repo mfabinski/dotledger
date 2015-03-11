@@ -1,4 +1,6 @@
 class Transaction < ActiveRecord::Base
+  extend Autocompleteable
+
   self.inheritance_column = nil
 
   belongs_to :account
@@ -16,6 +18,8 @@ class Transaction < ActiveRecord::Base
   validates :search, presence: true
 
   before_validation :set_search
+
+  autocomplete :search
 
   scope :unsorted, proc {
     includes(:sorted_transaction).where(sorted_transactions: { id: nil })
@@ -60,17 +64,6 @@ class Transaction < ActiveRecord::Base
       .where([tag_ids.map { '? = ANY(sorted_transactions.tag_ids)' }.join(' OR '), *tag_ids])
       .references(:sorted_transactions)
   }
-
-  def self.autocomplete_search(query, limit = 20)
-    where(['search ilike ?', "%#{query}%"])
-      .order(:search)
-      .uniq(:search)
-      .limit(limit)
-      .pluck(:search)
-      .map do |t|
-        {value: t }
-      end
-  end
 
   private
 
