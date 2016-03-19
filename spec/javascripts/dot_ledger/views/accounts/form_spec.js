@@ -27,10 +27,10 @@ describe('DotLedger.Views.Accounts.Form', function () {
     expect(view.$el).toContainElement('input[name=name]')
     expect(view.$el).toContainElement('input[name=number]')
     expect(view.$el).toContainElement('select[name=type]')
-    expect(view.$el).toContainElement('option[value=Cheque]')
-    expect(view.$el).toContainElement('option[value=Savings]')
-    expect(view.$el).toContainElement('option[value="Credit Card"]')
-    expect(view.$el).toContainElement('option[value=Other]')
+    expect(view.$el).toContainElement('select[name=type] option[value=Cheque]')
+    expect(view.$el).toContainElement('select[name=type] option[value=Savings]')
+    expect(view.$el).toContainElement('select[name=type] option[value="Credit Card"]')
+    expect(view.$el).toContainElement('select[name=type] option[value=Other]')
   })
   it('renders the heading for new account', function () {
     var view
