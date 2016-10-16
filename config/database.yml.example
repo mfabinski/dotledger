@@ -50,6 +50,7 @@ test:
   pool: 5
   username: dot_ledger
   password:
+  #host: localhost
 
 production:
   adapter: postgresql
@@ -58,3 +59,4 @@ production:
   pool: 5
   username: dot_ledger
   password:
+  #host: localhost

@@ -30,6 +30,13 @@ You'll have to modify the postgres username and password in `config/database.yml
 - `bundle exec rake db:setup`
 - `bundle exec rails server`
 
+Setup and run with docker
+-----------------
+
+- `git clone https://github.com/dotledger/dotledger.git`
+- `cd dotledger`
+- `docker-compose up --build -d`
+
 Tests
 -----
 
